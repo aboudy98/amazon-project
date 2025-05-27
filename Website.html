@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Rock paper sicsor</title>
+    <style>
+      .bg-color {
+        background-color: aqua;
+      }
+    </style>
+  </head>
+  <body>
+    <button class="bg-b1" id="name1" onclick="onPress(event)">Hello</button>
+    <button class="bg-b1" id="name2" onclick="onPress(event)">iam</button>
+    <button class="bg-b1" id="name3" onclick="onPress(event)">Abdallah</button>
+  </body>
+  <script>
+    function onPress(event) {
+      // Remove .bg-color from all buttons
+      const buttons = document.querySelectorAll('.bg-b1');
+      buttons.forEach((btn) => btn.classList.remove('bg-color'));
+
+      // Add .bg-color to the clicked button
+      event.target.classList.add('bg-color');
+    }
+  </script>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Rock paper sicsor</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <button class="bttn" onclick="changed()">clicked</button>
+
+</body>
+<script>
+
+    // the below function is used to excute function twice
+    // let count = 0;
+
+    // let intervalId = setInterval(() => {
+    //     console.log('Hello');
+    //     count++;
+
+    //     if (count >= 2) {
+    //         clearInterval(intervalId);
+    //         console.log('Interval cleared');
+    //     }
+    // }, 1000);
+
+
+    function changed(){
+         document.querySelector('.bttn').textContent = 'loading...';
+
+        setTimeout(() => {
+            document.querySelector('.bttn').textContent = 'Finshed';
+        }, 1000);
+
+    }
+
+
+
+
+</script>
+
+</html>

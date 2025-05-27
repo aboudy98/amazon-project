@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Rock paper sicsor</title>
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <input placeholder="enter text here" class="text" type="text">
+    <input type="date" class="js-date-feild">
+    <button onclick="dispalyfunc()">Submit</button>
+    <div class="result"></div>
+</body>
+<script>
+    const text = document.querySelector('.text');
+    const result = document.querySelector('.result');
+    const array = [];
+    function dispalyfunc() {
+
+        const val = text.value;
+        const val2 = document.querySelector('.js-date-feild').value;
+        array.push({name:val, dueDate:val2});
+
+
+        text.value = '';
+        console.log(array);
+        
+        renderTodoList();
+    }
+    function renderTodoList() {
+        let htmlElement = '';
+
+
+
+        for (let i = 0; i < array.length; i++) {
+            let name = array[i].name;
+            let date = array[i].dueDate;
+            htmlElement += `<p>
+                ${name}   ${date}
+                   <button onclick="
+                   array.splice(${i},2);
+                   renderTodoList();
+                   ">Delete</button>
+                </p>`;
+        }
+        result.innerHTML = htmlElement;
+
+
+
+
+
+    }
+</script>
+
+</html>
