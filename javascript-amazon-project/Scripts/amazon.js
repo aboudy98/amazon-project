@@ -1,6 +1,8 @@
 
 let productHtml = '';
 products.forEach((item)=>{
+  console.log(item.id);
+  
     productHtml+=`  <div class="product-container">
           <div class="product-image-container">
             <img class="product-image"
@@ -24,7 +26,7 @@ products.forEach((item)=>{
           </div>
 
           <div class="product-quantity-container">
-            <select>
+            <select class='js-select-value-${item.id}'>
               <option selected value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -40,9 +42,8 @@ products.forEach((item)=>{
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart">
-            <img src="images/icons/checkmark.png">
-            Added
+          <div class="added-to-cart js-added-to-cart-${item.id}">
+            
           </div>
 
           <button data-product-id="${item.id}"
@@ -62,6 +63,15 @@ document.querySelector('.js-products-div').innerHTML = productHtml;
 document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
     button.addEventListener('click',()=>{
         const productId = button.dataset.productId;//productId come from data-product-id in html
+        const quantityPerProduct = document.querySelector(`.js-select-value-${productId}`).value;
+        const addToCartHtml = '<img src="images/icons/checkmark.png">Added';
+        document.querySelector(`.js-added-to-cart-${productId}`).innerHTML=addToCartHtml;
+
+        setTimeout(()=>{
+          document.querySelector(`.js-added-to-cart-${productId}`).innerHTML='';
+
+        },3000)
+        
         let matchingItem;
        cart.forEach((item)=>{
         if(item.productId === productId){
@@ -71,19 +81,28 @@ document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
        })
 
        if(matchingItem){
-        matchingItem.quantiy+=1; // the quantity of this item in cart increase because as we know two object point to the same reference if change value in one object it will automatically change in the second object and here we have object item = object cart
+        matchingItem.quantity+=Number(quantityPerProduct); // the quantity of this item in cart increase because as we know two object point to the same reference if change value in one object it will automatically change in the second object and here we have object item = object cart
         
 
        }else{
         cart.push({
           productId,
-          quantiy:1
+          quantity:Number(quantityPerProduct)
         })
        }
+       let cartQuantity=0;
+       cart.forEach((item)=>{
+        cartQuantity+=item.quantity;
+
+       })
+       document.querySelector('.js-quantity').textContent = `${cartQuantity}`
        
-       console.log(cart);
+       
+       console.log(quantityPerProduct);
+       
+       
         
-    })
+    });
     
     
 
