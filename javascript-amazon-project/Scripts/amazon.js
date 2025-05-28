@@ -87,7 +87,8 @@ document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
        }else{
         cart.push({
           productId,
-          quantity:Number(quantityPerProduct)
+          quantity:Number(quantityPerProduct),
+          deliveryOptionId:'1'
         })
        }
        let cartQuantity=0;
