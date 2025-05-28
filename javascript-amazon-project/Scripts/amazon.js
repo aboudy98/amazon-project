@@ -45,7 +45,8 @@ products.forEach((item)=>{
             Added
           </div>
 
-          <button class="add-to-cart-button button-primary">
+          <button data-product-id="${item.id}"
+          class="add-to-cart-button button-primary js-add-to-cart">
             Add to Cart
           </button>
         </div>
@@ -57,4 +58,35 @@ products.forEach((item)=>{
 })
 
 document.querySelector('.js-products-div').innerHTML = productHtml;
+
+document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
+    button.addEventListener('click',()=>{
+        const productId = button.dataset.productId;//productId come from data-product-id in html
+        let matchingItem;
+       cart.forEach((item)=>{
+        if(item.productId === productId){
+          matchingItem = item;
+
+        }
+       })
+
+       if(matchingItem){
+        matchingItem.quantiy+=1; // the quantity of this item in cart increase because as we know two object point to the same reference if change value in one object it will automatically change in the second object and here we have object item = object cart
+        
+
+       }else{
+        cart.push({
+          productId,
+          quantiy:1
+        })
+       }
+       
+       console.log(cart);
+        
+    })
+    
+    
+
+    
+})
 
