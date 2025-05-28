@@ -98,7 +98,7 @@ document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
        document.querySelector('.js-quantity').textContent = `${cartQuantity}`
        
        
-       console.log(quantityPerProduct);
+       saveToLocalStorge();
        
        
         
