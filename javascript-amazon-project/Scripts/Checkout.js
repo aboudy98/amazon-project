@@ -1,5 +1,5 @@
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
-import { deliveryOptions } from './deliveryOption.js'
+import { deliveryOptions,getDeliveryOption } from './deliveryOption.js'
 
 
 
@@ -117,6 +117,7 @@ function renderOrderSummery() {
             removeFromCart(productId);
             const container = document.querySelector(`.js-item-container-${productId}`);
             container.remove();
+            renderPaymentSummery();
 
 
         })
@@ -127,6 +128,7 @@ function renderOrderSummery() {
             const { productId, deliveryOptionId } = element.dataset;// hay it mean get productId ftom element.dataset.productId and get deliveryOptionId from element.dataset.deliveryOptionId
             updateDeliveryOption(productId, deliveryOptionId);
             renderOrderSummery();
+            renderPaymentSummery();
 
         })
     })
@@ -136,3 +138,72 @@ renderOrderSummery();
 
 
 /////////////////////////chechout pagr...............////////////////
+
+function renderPaymentSummery() {
+    let productPriceCents = 0;
+    let matchingItemsCheckout ;
+    let shippingPriceCents = 0;
+    products.forEach((product) => {
+
+        cart.forEach((item) => {
+            if (item.productId === product.id) {
+                matchingItemsCheckout = product;
+                productPriceCents += matchingItemsCheckout.priceCents * item.quantity;
+                const deliveryOption = getDeliveryOption(item.deliveryOptionId);
+                shippingPriceCents = shippingPriceCents+deliveryOption.priceCents;
+                
+                
+            
+            }
+        })
+
+    })
+
+    const totalBeforeTax = shippingPriceCents + productPriceCents;
+    const taxCents = totalBeforeTax * 0.1;
+    const total = taxCents + totalBeforeTax;
+
+    const paymentSummeryHtml = `
+     <div class="payment-summary-title">
+          Order Summary
+        </div>
+
+        <div class="payment-summary-row">
+          <div>Items (3):</div>
+          <div class="payment-summary-money">$${(productPriceCents/100).toFixed(2)}</div>
+        </div>
+
+        <div class="payment-summary-row">
+          <div>Shipping &amp; handling:</div>
+          <div class="payment-summary-money">$${(shippingPriceCents/100).toFixed(2)}</div>
+        </div>
+
+        <div class="payment-summary-row subtotal-row">
+          <div>Total before tax:</div>
+          <div class="payment-summary-money">$${(totalBeforeTax/100).toFixed(2)}</div>
+        </div>
+
+        <div class="payment-summary-row">
+          <div>Estimated tax (10%):</div>
+          <div class="payment-summary-money">$${(taxCents/100).toFixed(2)}</div>
+        </div>
+
+        <div class="payment-summary-row total-row">
+          <div>Order total:</div>
+          <div class="payment-summary-money">$${(total/100).toFixed(2)}</div>
+        </div>
+
+        <button class="place-order-button button-primary">
+          Place your order
+        </button>
+    `
+   
+   document.querySelector('.js-payment-summary').innerHTML = paymentSummeryHtml;
+
+
+
+
+}
+renderPaymentSummery();
+
+
