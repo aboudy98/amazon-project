@@ -5,32 +5,32 @@ import { deliveryOptions } from './deliveryOption.js'
 
 
 
+function renderOrderSummery() {
+    let cartSummaryHtml = '';
+    cart.forEach((item) => {
+        const productId = item.productId;
+        let matchingProduct;
 
-let cartSummaryHtml = '';
-cart.forEach((item) => {
-    const productId = item.productId;
-    let matchingProduct;
-
-    products.forEach((product) => {
-        if (product.id === productId) {
-            matchingProduct = product;
+        products.forEach((product) => {
+            if (product.id === productId) {
+                matchingProduct = product;
 
 
-        }
-    })
-    const deliveryOptionId = item.deliveryOptionId;
-    let deliveryOption;
-    deliveryOptions.forEach((options)=>{
-        if(options.id === deliveryOptionId){
-            deliveryOption = options;
-        }
+            }
+        })
+        const deliveryOptionId = item.deliveryOptionId;
+        let deliveryOption;
+        deliveryOptions.forEach((options) => {
+            if (options.id === deliveryOptionId) {
+                deliveryOption = options;
+            }
 
-    })
-     const today = dayjs();
-    const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
-    const dateString = deliveryDate.format('dddd , MMMM D');
-    cartSummaryHtml +=
-        `
+        })
+        const today = dayjs();
+        const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
+        const dateString = deliveryDate.format('dddd , MMMM D');
+        cartSummaryHtml +=
+            `
     <div class="cart-item-container js-item-container-${matchingProduct.id}">
             <div class="delivery-date">
               Delivery date: ${dateString}
@@ -65,7 +65,7 @@ cart.forEach((item) => {
                 <div class="delivery-options-title">
                   Choose a delivery option:
                 </div>
-                ${deliveryOptionHtml(matchingProduct,item)}
+                ${deliveryOptionHtml(matchingProduct, item)}
                 
               </div>
             </div>
@@ -73,24 +73,24 @@ cart.forEach((item) => {
     `
 
 
-});
-function deliveryOptionHtml(matchingProduct,item){
-    let html = '';
-    deliveryOptions.forEach((option) => {
-    const today = dayjs();
-    const deliveryDate = today.add(option.deliveryDays, 'days');
-    const dateString = deliveryDate.format('dddd , MMMM D');
-    const priceString = option.priceCents === 0 ? 'Free'
-    : `$${option.priceCents}`;
-    const isChecked = option.id === item.deliveryOptionId;
+    });
+    function deliveryOptionHtml(matchingProduct, item) {
+        let html = '';
+        deliveryOptions.forEach((option) => {
+            const today = dayjs();
+            const deliveryDate = today.add(option.deliveryDays, 'days');
+            const dateString = deliveryDate.format('dddd , MMMM D');
+            const priceString = option.priceCents === 0 ? 'Free'
+                : `$${option.priceCents}`;
+            const isChecked = option.id === item.deliveryOptionId;
 
-    html+=
-    `
+            html +=
+                `
     <div class="delivery-option js-delivery-option" data-product-id="${matchingProduct.id}" 
     data-delivery-option-id = "${option.id}">
 
                   <input type="radio"
-                  ${isChecked? 'checked':''}
+                  ${isChecked ? 'checked' : ''}
                     class="delivery-option-input "
                     name="delivery-option-${matchingProduct.id}">
                   <div>
@@ -104,28 +104,35 @@ function deliveryOptionHtml(matchingProduct,item){
                 </div>
                 
     `
-})
-return html;
+        })
+        return html;
+    }
+
+    document.querySelector('.js-order-summary').innerHTML = cartSummaryHtml;
+
+    document.querySelectorAll('.js-delete-link').forEach((link) => {
+        link.addEventListener('click', () => {
+
+            const productId = link.dataset.productId;
+            removeFromCart(productId);
+            const container = document.querySelector(`.js-item-container-${productId}`);
+            container.remove();
+
+
+        })
+    })
+
+    document.querySelectorAll('.js-delivery-option').forEach((element) => {
+        element.addEventListener('click', () => {
+            const { productId, deliveryOptionId } = element.dataset;// hay it mean get productId ftom element.dataset.productId and get deliveryOptionId from element.dataset.deliveryOptionId
+            updateDeliveryOption(productId, deliveryOptionId);
+            renderOrderSummery();
+
+        })
+    })
 }
 
-document.querySelector('.js-order-summary').innerHTML = cartSummaryHtml;
-
-document.querySelectorAll('.js-delete-link').forEach((link) => {
-    link.addEventListener('click', () => {
-
-        const productId = link.dataset.productId;
-        removeFromCart(productId);
-        const container = document.querySelector(`.js-item-container-${productId}`);
-        container.remove();
+renderOrderSummery();
 
 
-    })
-})
-
-document.querySelectorAll('.js-delivery-option').forEach((element)=>{
-    element.addEventListener('click',()=>{
-        const {productId, deliveryOptionId} = element.dataset;// hay it mean get productId ftom element.dataset.productId and get deliveryOptionId from element.dataset.deliveryOptionId
-        updateDeliveryOption(productId, deliveryOptionId)
-
-    })
-})
+/////////////////////////chechout pagr...............////////////////
