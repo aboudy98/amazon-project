@@ -1,15 +1,20 @@
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import { deliveryOptions,getDeliveryOption } from './deliveryOption.js'
+import { cart } from '../CartTest/Cart.js';
+import { products } from '../CartTest/products.js';
 
 
 
 
-
-export function renderOrderSummery() {
+ function renderOrderSummery() {
     let cartSummaryHtml = '';
+  
+    
     cart.forEach((item) => {
         const productId = item.productId;
         let matchingProduct;
+       
+        
 
         products.forEach((product) => {
             if (product.id === productId) {
@@ -29,9 +34,13 @@ export function renderOrderSummery() {
         const today = dayjs();
         const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
         const dateString = deliveryDate.format('dddd , MMMM D');
+        console.log("Hello"+cartSummaryHtml);
+        
         cartSummaryHtml +=
             `
-    <div class="cart-item-container js-item-container-${matchingProduct.id}">
+    <div class="cart-item-container
+    js-item-container 
+    js-item-container-${matchingProduct.id}">
             <div class="delivery-date">
               Delivery date: ${dateString}
             </div>
@@ -47,7 +56,7 @@ export function renderOrderSummery() {
                 <div class="product-price">
                   $${(matchingProduct.priceCents / 100).toFixed(2)}
                 </div>
-                <div class="product-quantity">
+                <div class="product-quantity js-product-quantity-${matchingProduct.id}">
                   <span>
                     Quantity: <span class="quantity-label">${item.quantity}</span>
                   </span>
@@ -55,7 +64,7 @@ export function renderOrderSummery() {
                     Update
                   </span>
                   <span class="delete-quantity-link link-primary js-delete-link"
-                  data-product-id="${matchingProduct.id}">
+                  data-product-id="${matchingProduct.id} js-delete-link-${matchingProduct.id}">
                     Delete
                   </span>
                 </div>
@@ -107,6 +116,8 @@ export function renderOrderSummery() {
         })
         return html;
     }
+    console.log(cartSummaryHtml);
+    
 
     document.querySelector('.js-order-summary').innerHTML = cartSummaryHtml;
 
