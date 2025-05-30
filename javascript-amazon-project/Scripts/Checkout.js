@@ -1,6 +1,6 @@
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import { deliveryOptions,getDeliveryOption } from './deliveryOption.js'
-import {cart as oopCart} from './Checkout/Cart-oop.js'
+import {Cart as oopCart} from './Checkout/Cart-class.js'
 
 
 

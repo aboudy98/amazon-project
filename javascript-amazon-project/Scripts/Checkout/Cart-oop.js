@@ -54,7 +54,7 @@ removeFromCart:function(productId){
 return cart;
 }
 const cart = Cart('cart-oop');
-const bussnissCart = cart('bussniss-cart');
+const bussnissCart = Cart('bussniss-cart');
 cart.loadFromStorage();
 console.log(cart);
 
