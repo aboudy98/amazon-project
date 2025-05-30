@@ -1,14 +1,16 @@
 // class is to write the functions in a class instead of writing function in object note that class is used to organize our code
 export class Cart {
+    // cart item mndun # its mean cartItem is public property can be used outside the class
     cartItems;
-    localStorageKey;
+    //# means that local storageKey is a private property can be used only inside the class
+    #localStorageKey;
     // this constructor let us setup code inside the classes
     constructor(localStorageKey) { // mn dun l constructor badna n7ut heda l code barra ta7t const cart = new Cart()  lm3arefun ta7t;
 
 
         
-        this.localStorageKey = localStorageKey;
-        this.loadFromStorage();
+        this.#localStorageKey = localStorageKey;
+        this.#loadFromStorage();
 
 
     }
@@ -26,9 +28,9 @@ export class Cart {
 
     }
 
-    loadFromStorage() {
+    #loadFromStorage() {
         //this here means cart (object name)             and this here mean localStorage key that defined above
-        this.cartItems = JSON.parse(localStorage.getItem(this.localStorageKey));
+        this.cartItems = JSON.parse(localStorage.getItem(this.#localStorageKey));
 
         if (!this.cartItems) {
             this.cartItems = [{
@@ -39,7 +41,7 @@ export class Cart {
         }
     }
     saveToLocalStorge() {
-        localStorage.setItem(this.localStorageKey, JSON.stringify(this.cartItems));
+        localStorage.setItem(this.#localStorageKey, JSON.stringify(this.cartItems));
     }
     removeFromCart(productId) {
         const newCart = [];
