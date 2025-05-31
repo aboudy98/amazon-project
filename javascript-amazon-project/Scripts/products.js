@@ -10,6 +10,16 @@ class Products{
     this.rating=productsDetails.rating;
     this.priceCents=productsDetails.priceCents
   }
+    //if you go cart js you can find that we calculated star and prices in html we can instead calculate it here and move the result to it
+   getStarsUrl(){
+      return `images/ratings/rating-${this.rating.stars*10}.png`
+
+    }
+    getPrice(){
+      return `$${this.priceCents.toFix(2)}`;
+
+    }
+  extraInfoHtml(){return ``}
 }
 // thats how we convert object to array you can do the rest by defining  product2 product3 or just using loops
 const product1 = new Products({
@@ -26,15 +36,8 @@ const product1 = new Products({
       "sports",
       "apparel"
     ]
-    //if you go cart js you can find that we calculated star and prices in html we can instead calculate it here and move the result to it
-    getStarsUrl(){
-      return `images/ratings/rating-${this.rating.stars*10}.png`
-
-    }
-    getPrice(){
-      return `$${this.priceCents.toFix(2)}`;
-
-    }
+  
+   
   });
 const products = [
   {
@@ -696,9 +699,51 @@ const products = [
     ]
   }
 ];
+// inhertance in java script
+class Clothing extends Products{
+  sizeChartLink;
+  constructor(productsDetails){
+    
+    this.sizeChartLink = productsDetails.sizeChartLink;
+    //hala2 badna n7ut lid wil image wkul shi 7atenu bel constructor taba3 Products class fena na3mil this.id = productDetails.id wlal image wkul shi nafs
+    // loconstructor bil product bas la7ata nawafer wa2t wm na3me; dublicate lal code fena noktub hayk:
+    super(productsDetails);// super here called the constructor of the in the product class
+    //lets say if the type of the product is clothing we want to generate html to handle div that have multiple size:
+    extraInfoHtml(){
+      return ` 
+      <a href="${this.sizeChartLink}" target="_blank">Size chart</a>
+      `
+    }// on html we call this function like that in home page: ${product.extraInfoHtml()}
+
+
+
+    // to call function from parent class and return it exactly as in parenet class without override it you need to use super keyword example: supper.extraInfoHtml()
+
+
+
+  }
+
+} 
+const tshirt = new Clothing({
+    id: "83d4ca15-0f35-48f5-b7a3-1ea210004f2e",
+    image: "images/products/adults-plain-cotton-tshirt-2-pack-teal.jpg",
+    name: "Adults Plain Cotton T-Shirt - 2 Pack",
+    rating: {
+      stars: 4.5,
+      count: 56
+    },
+    priceCents: 799,
+    keywords: [
+      "tshirts",
+      "apparel",
+      "mens"
+    ],
+    type: "clothing",
+    sizeChartLink: "images/clothing-size-chart.png"
+  });
 // that how to covert product object into class using loops
 
-const productsConverToClass = [
+const productsObjectConverToClass = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
     image: "images/products/athletic-cotton-socks-6-pairs.jpg",
@@ -1358,5 +1403,46 @@ const productsConverToClass = [
     ]
   }
 ].map((item)=>{
+  // to coverte tshirt from product class into clothing class we type the following:
+  if(item.type === 'clothing'){
+    return new Clothing(item);
+
+  }
   return new Products(item);
 });
+
+
+// built in class Date class 
+
+const date = new Date();// this gives date in day month and year
+date.toLocaleTimeString();// giv us date in hours minuts and seconds
+
+
+/////////// More feauture about this 
+//1
+const object2={
+  a:1,
+  b:this.a// here you think this will point to object2 but the object2 is not created yet so when you console.log(object2.b) the output will be undefined
+
+}
+//2
+function logThis(){
+  console.log(this);
+ 
+
+  
+}
+ logThis()// when excuting the function the result is undefined because this not inside the object and this is used to point to the object
+
+ logThis().call('hello');// this works exactly as logThis but we can set the value of this whatever we want so this will has the value of hello
+
+ // note that this in arrow function will have whatever value this outside the function 
+this // this this is undefined 
+ const object3={
+  method:()=>{
+    console.log(this);// so this this also undefined
+  }
+ }
+ object3.method();// log undefined
+ // you can repeate 19:27 in video saved 
+ 
